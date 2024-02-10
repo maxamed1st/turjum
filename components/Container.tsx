@@ -1,11 +1,12 @@
-import { StyleSheet, View } from 'react-native'
-import React from 'react'
+import { StyleSheet, SafeAreaView } from 'react-native'
 
 export default function Container({ children }: any) {
   return (
-    <View style={styles.container}>
-      {children}
-    </View>
+    <>
+      <SafeAreaView style={styles.container}>
+        {children}
+      </SafeAreaView>
+    </>
   )
 }
 
