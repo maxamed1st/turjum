@@ -3,7 +3,7 @@ import { Text, TextInput, TouchableOpacity, View } from "react-native";
 import { useSignUp } from "@clerk/clerk-expo";
 import { log } from "../utils/logger";
 import { styles } from "../components/Styles";
-import { signUpProps } from "../App";
+import { signUpProps } from "../types";
 
 export default function SignUp({
   navigation,
@@ -32,8 +32,8 @@ export default function SignUp({
 
       navigation.navigate("VerifyCode");
     } catch (err: any) {
-      log("Error:> " + err?.status || "");
-      log("Error:> " + err?.errors ? JSON.stringify(err.errors) : err);
+      log("SignUpError:> " + err?.status || "");
+      log("SignUpError:> " + err?.errors ? JSON.stringify(err.errors) : err);
     }
   };
 

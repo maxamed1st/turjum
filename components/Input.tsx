@@ -8,7 +8,7 @@ export default function Input({ label, ...props }: inputProps) {
     <>
       <Text style={styles.label}>{label}</Text>
       <TextInput
-        style={styles.input}
+        style={styles.textInput}
         {...props}
       />
     </>
@@ -16,10 +16,11 @@ export default function Input({ label, ...props }: inputProps) {
 }
 
 const styles = StyleSheet.create({
-  input: {
-    height: 40,
-    margin: 6,
-    borderWidth: 1,
+  textInput: {
+    height: 50,
+    flex: 1,
+    padding: 10,
+    marginLeft: 20,
   },
   label: {
     display: "flex",

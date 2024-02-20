@@ -3,15 +3,15 @@ import { Text, TextInput, TouchableOpacity, View } from "react-native";
 import { useSignIn } from "@clerk/clerk-expo";
 import { log } from "../utils/logger";
 import { styles } from "../components/Styles";
-import { signInProps } from "../App";
+import { signInProps } from "../types";
 
 export default function SignIn({
   navigation,
 }: signInProps) {
   const { signIn, setActive, isLoaded } = useSignIn();
 
-  const [emailAddress, setEmailAddress] = useState("");
-  const [password, setPassword] = useState("");
+  const [emailAddress, setEmailAddress] = useState("maxamed1st@gmail.com");
+  const [password, setPassword] = useState("1234");
 
   const onSignInPress = async () => {
     if (!isLoaded) {
@@ -26,8 +26,8 @@ export default function SignIn({
 
       await setActive({ session: completeSignIn.createdSessionId });
     } catch (err: any) {
-      log("Error:> " + err?.status || "");
-      log("Error:> " + err?.errors ? JSON.stringify(err.errors) : err);
+      log("SignInError:> " + err?.status || "");
+      log("SignInError:> " + err?.errors ? JSON.stringify(err.errors) : err);
     }
   };
 

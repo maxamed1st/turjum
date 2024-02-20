@@ -1,6 +1,7 @@
 import { SignedIn, SignedOut, useAuth, useUser } from "@clerk/clerk-expo";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { profileProps } from "../App";
+import { useTailwind } from 'tailwind-rn';
+import { profileProps } from "../types";
 import { log } from "../utils/logger";
 
 export default function SafeProfile(
@@ -12,7 +13,7 @@ export default function SafeProfile(
         <Profile {...props} />
       </SignedIn>
       <SignedOut>
-        <View style={styles.container}>
+        <View>
           <Text>Unauthorized</Text>
         </View>
       </SignedOut>
@@ -21,6 +22,7 @@ export default function SafeProfile(
 }
 
 function Profile({ navigation }: profileProps) {
+  const tailwind = useTailwind();
   const { signOut } = useAuth();
   const { user } = useUser();
 
@@ -43,7 +45,7 @@ function Profile({ navigation }: profileProps) {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={tailwind("p-4")}>
       <Text style={styles.title}>Hello {user?.firstName}</Text>
       <TouchableOpacity onPress={onDelPress} style={styles.link}>
         <Text style={styles.linkText}>Delete Account</Text>
@@ -57,12 +59,6 @@ function Profile({ navigation }: profileProps) {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    padding: 20,
-  },
   title: {
     fontSize: 20,
     fontWeight: "bold",

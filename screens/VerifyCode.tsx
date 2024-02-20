@@ -3,11 +3,8 @@ import { useState } from "react";
 import { useSignUp } from "@clerk/clerk-expo";
 import { styles } from "../components/Styles";
 import { log } from "../utils/logger";
-import { verifyCodeProps } from "../App";
 
-export default function VerifyCode({
-  navigation,
-}: verifyCodeProps) {
+export default function VerifyCode() {
   const { isLoaded, signUp, setActive } = useSignUp();
 
   const [code, setCode] = useState("");
