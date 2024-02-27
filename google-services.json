@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "725718374058",
+    "project_id": "turjum-cf6e9",
+    "storage_bucket": "turjum-cf6e9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:725718374058:android:37efd53ac053a5140922d3",
+        "android_client_info": {
+          "package_name": "com.walaalka.turjum"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAteSN79k5Rn_YuJ5wTah74HRnNVH_Hkc4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
