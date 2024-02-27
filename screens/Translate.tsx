@@ -2,9 +2,12 @@ import { DocumentPickerResult, getDocumentAsync } from 'expo-document-picker';
 import FormData from 'form-data';
 import axios from "axios";
 import { useState } from 'react';
-import { Text, View, Pressable } from 'react-native';
+import { Text, Pressable } from 'react-native';
 import { useTailwind } from 'tailwind-rn';
 import Constants from 'expo-constants';
+import log from "@/utils/logger"
+import { StatusBar } from 'expo-status-bar';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function Translate() {
   const tailwind = useTailwind();
@@ -30,19 +33,17 @@ export default function Translate() {
       });
 
       const result = await axios.postForm(url, payload);
-      const status = result.status;
-      const res = await result.data;
 
-      console.log("TRANSLATE: ", status, "\n", res);
+      log("TRANSLATE", result.status + "\n" + result.data);
     } catch (err) {
-      console.error("TRANSLATE: ", err)
+      log("TRANSLATE", err)
     }
   }
 
   return (
     <>
       {title ?
-        <View style={tailwind("flex-1 justify-start p-2")}>
+        <SafeAreaView style={tailwind("flex-1 justify-start p-2")}>
           <Text style={tailwind("text-xs border py-3 px-3 rounded-md")}>{title}</Text>
           <Pressable
             onPress={handleTranslation}
@@ -50,12 +51,13 @@ export default function Translate() {
           >
             <Text style={tailwind("text-white")}>Turjum</Text>
           </Pressable>
-        </View>
+        </SafeAreaView>
         :
-        <View style={tailwind("flex-1 justify-center")}>
+        <SafeAreaView style={tailwind("flex-1 justify-center")}>
           <Text style={tailwind("text-blue-600 text-center")} onPress={handleUpload}>upload a document...</Text>
-        </View>
+        </SafeAreaView>
       }
+      <StatusBar style='dark' />
     </>
   )
 }

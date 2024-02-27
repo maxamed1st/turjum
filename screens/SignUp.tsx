@@ -1,18 +1,20 @@
 import { useState } from "react";
 import { Text, TextInput, TouchableOpacity, View } from "react-native";
-import { useSignUp } from "@clerk/clerk-expo";
-import { log } from "../utils/logger";
-import { styles } from "../components/Styles";
-import { signUpProps } from "../types";
+import log from "@/utils/logger";
+import { styles } from "@/components/Styles";
+import { signUpProps } from "@/types";
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 
 export default function SignUp({
   navigation,
 }: signUpProps) {
-  const { isLoaded, signUp } = useSignUp();
+  const isLoaded = true;
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [emailAddress, setEmailAddress] = useState("");
   const [password, setPassword] = useState("");
+
+  const auth = getAuth();
 
   const onSignUpPress = async () => {
     if (!isLoaded) {
@@ -20,20 +22,10 @@ export default function SignUp({
     }
 
     try {
-      await signUp.create({
-        firstName,
-        lastName,
-        emailAddress,
-        password,
-      });
-
-      // https://docs.clerk.dev/popular-guides/passwordless-authentication
-      await signUp.prepareEmailAddressVerification({ strategy: "email_code" });
-
-      navigation.navigate("VerifyCode");
+      await createUserWithEmailAndPassword(auth, emailAddress, password);
     } catch (err: any) {
-      log("SignUpError:> " + err?.status || "");
-      log("SignUpError:> " + err?.errors ? JSON.stringify(err.errors) : err);
+      log("SignUp", err?.status || "");
+      log("SignUp", err?.errors ? JSON.stringify(err.errors) : err);
     }
   };
 

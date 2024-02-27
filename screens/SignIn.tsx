@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { Text, TextInput, TouchableOpacity, View } from "react-native";
 import { useSignIn } from "@clerk/clerk-expo";
-import { log } from "../utils/logger";
-import { styles } from "../components/Styles";
-import { signInProps } from "../types";
+import log from "@/utils/logger";
+import { styles } from "@/components/Styles";
+import { signInProps } from "@/types";
 
 export default function SignIn({
   navigation,
@@ -26,8 +26,8 @@ export default function SignIn({
 
       await setActive({ session: completeSignIn.createdSessionId });
     } catch (err: any) {
-      log("SignInError:> " + err?.status || "");
-      log("SignInError:> " + err?.errors ? JSON.stringify(err.errors) : err);
+      log("SignIn", err?.status || "");
+      log("SignIn", err?.errors ? JSON.stringify(err.errors) : err);
     }
   };
 

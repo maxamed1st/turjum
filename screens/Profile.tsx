@@ -1,8 +1,8 @@
 import { SignedIn, SignedOut, useAuth, useUser } from "@clerk/clerk-expo";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useTailwind } from 'tailwind-rn';
-import { profileProps } from "../types";
-import { log } from "../utils/logger";
+import { profileProps } from "@/types";
+import log from "../utils/logger";
 
 export default function SafeProfile(
   props: profileProps
@@ -30,8 +30,8 @@ function Profile({ navigation }: profileProps) {
     try {
       user?.delete();
     } catch (err: any) {
-      log("Error:> " + err?.status || "");
-      log("Error:> " + err?.errors ? JSON.stringify(err.errors) : err);
+      log("Error", err?.status || "");
+      log("Error", err?.errors ? JSON.stringify(err.errors) : err);
     }
   }
 
@@ -39,8 +39,8 @@ function Profile({ navigation }: profileProps) {
     try {
       await signOut();
     } catch (err: any) {
-      log("Error:> " + err?.status || "");
-      log("Error:> " + err?.errors ? JSON.stringify(err.errors) : err);
+      log("Error", err?.status || "");
+      log("Error", err?.errors ? JSON.stringify(err.errors) : err);
     }
   };
 

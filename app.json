@@ -3,6 +3,11 @@
     "name": "turjum",
     "slug": "turjum",
     "version": "1.0.0",
+    "extra": {
+      "eas": {
+        "projectId": "bb9ddcdf-97dc-42a9-a7eb-3d6579b60612"
+      }
+    },
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -15,13 +20,20 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.walaalka.turjum"
     },
+    "plugins": [
+      "@react-native-firebase/app",
+      "@react-native-firebase/auth"
+    ],
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "googleServicesFile": "./google-services.json",
+      "package": "com.walaalka.turjum"
     },
     "web": {
       "favicon": "./assets/favicon.png"

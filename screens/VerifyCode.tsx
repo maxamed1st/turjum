@@ -1,8 +1,8 @@
 import { Text, TextInput, TouchableOpacity, View } from "react-native";
 import { useState } from "react";
 import { useSignUp } from "@clerk/clerk-expo";
-import { styles } from "../components/Styles";
-import { log } from "../utils/logger";
+import { styles } from "@/components/Styles";
+import log from "@/utils/logger";
 
 export default function VerifyCode() {
   const { isLoaded, signUp, setActive } = useSignUp();
@@ -21,8 +21,8 @@ export default function VerifyCode() {
 
       await setActive({ session: completeSignUp.createdSessionId });
     } catch (err: any) {
-      log("Error:> " + err?.status || "");
-      log("Error:> " + err?.errors ? JSON.stringify(err.errors) : err);
+      log("Error", err?.status || "");
+      log("Error", err?.errors ? JSON.stringify(err.errors) : err);
     }
   };
 

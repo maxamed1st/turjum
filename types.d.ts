@@ -5,6 +5,7 @@ export type RootStackParamList = {
   SignIn: undefined;
   SignUp: undefined;
   VerifyCode: undefined;
+  Output: undefined;
 }
 
 export type RootTabParamList = {
