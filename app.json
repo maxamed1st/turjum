@@ -23,10 +23,6 @@
       "supportsTablet": true,
       "bundleIdentifier": "com.walaalka.turjum"
     },
-    "plugins": [
-      "@react-native-firebase/app",
-      "@react-native-firebase/auth"
-    ],
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",

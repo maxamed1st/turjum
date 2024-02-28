@@ -21,7 +21,7 @@ export default function Translate() {
     setDoc(doc);
   }
 
-  const handleTranslation = async () => {
+  const handleDocTranslation = async () => {
     try {
       const url = Constants?.expoConfig?.extra?.URL
       const payload = new FormData();
@@ -32,9 +32,10 @@ export default function Translate() {
         type: doc?.assets?.at(0)?.mimeType,
       });
 
-      const result = await axios.postForm(url, payload);
+      //const result = await axios.postForm(url, payload);
 
-      log("TRANSLATE", result.status + "\n" + result.data);
+      //log("TRANSLATE", result.status + "\n" + result.data);
+      log("translate", "handleDocTranslation");
     } catch (err) {
       log("TRANSLATE", err)
     }
@@ -46,7 +47,7 @@ export default function Translate() {
         <SafeAreaView style={tailwind("flex-1 justify-start p-2")}>
           <Text style={tailwind("text-xs border py-3 px-3 rounded-md")}>{title}</Text>
           <Pressable
-            onPress={handleTranslation}
+            onPress={handleDocTranslation}
             style={tailwind("w-['100%'] bg-blue-500 items-center py-3 px-3 mt-auto rounded")}
           >
             <Text style={tailwind("text-white")}>Turjum</Text>

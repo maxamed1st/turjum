@@ -1,30 +1,21 @@
 import { useState } from "react";
 import { Text, TextInput, TouchableOpacity, View } from "react-native";
-import { useSignIn } from "@clerk/clerk-expo";
 import log from "@/utils/logger";
 import { styles } from "@/components/Styles";
 import { signInProps } from "@/types";
+import { auth } from "@/utils/firebase";
+import { signInWithEmailAndPassword } from "firebase/auth";
 
 export default function SignIn({
   navigation,
 }: signInProps) {
-  const { signIn, setActive, isLoaded } = useSignIn();
-
   const [emailAddress, setEmailAddress] = useState("maxamed1st@gmail.com");
-  const [password, setPassword] = useState("1234");
+  const [password, setPassword] = useState("123456");
 
   const onSignInPress = async () => {
-    if (!isLoaded) {
-      return;
-    }
-
     try {
-      const completeSignIn = await signIn.create({
-        identifier: emailAddress,
-        password,
-      });
+      await signInWithEmailAndPassword(auth, emailAddress, password);
 
-      await setActive({ session: completeSignIn.createdSessionId });
     } catch (err: any) {
       log("SignIn", err?.status || "");
       log("SignIn", err?.errors ? JSON.stringify(err.errors) : err);

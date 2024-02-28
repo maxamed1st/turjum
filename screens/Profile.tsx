@@ -1,34 +1,18 @@
-import { SignedIn, SignedOut, useAuth, useUser } from "@clerk/clerk-expo";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { auth } from "@/utils/firebase";
 import { useTailwind } from 'tailwind-rn';
-import { profileProps } from "@/types";
 import log from "../utils/logger";
+import { User, deleteUser, signOut } from "firebase/auth";
+import useUser from "@/store/useUser";
 
-export default function SafeProfile(
-  props: profileProps
-) {
-  return (
-    <>
-      <SignedIn>
-        <Profile {...props} />
-      </SignedIn>
-      <SignedOut>
-        <View>
-          <Text>Unauthorized</Text>
-        </View>
-      </SignedOut>
-    </>
-  );
-}
-
-function Profile({ navigation }: profileProps) {
+export default function Profile() {
   const tailwind = useTailwind();
-  const { signOut } = useAuth();
-  const { user } = useUser();
+  const user = auth.currentUser as User;
+  const userData = useUser(state => state.data);
 
   const onDelPress = async () => {
     try {
-      user?.delete();
+      deleteUser(user);
     } catch (err: any) {
       log("Error", err?.status || "");
       log("Error", err?.errors ? JSON.stringify(err.errors) : err);
@@ -37,7 +21,7 @@ function Profile({ navigation }: profileProps) {
 
   const onSignOutPress = async () => {
     try {
-      await signOut();
+      await signOut(auth);
     } catch (err: any) {
       log("Error", err?.status || "");
       log("Error", err?.errors ? JSON.stringify(err.errors) : err);
@@ -46,7 +30,7 @@ function Profile({ navigation }: profileProps) {
 
   return (
     <View style={tailwind("p-4")}>
-      <Text style={styles.title}>Hello {user?.firstName}</Text>
+      <Text style={styles.title}>Hello {userData.firstName}</Text>
       <TouchableOpacity onPress={onDelPress} style={styles.link}>
         <Text style={styles.linkText}>Delete Account</Text>
       </TouchableOpacity>

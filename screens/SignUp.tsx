@@ -3,26 +3,36 @@ import { Text, TextInput, TouchableOpacity, View } from "react-native";
 import log from "@/utils/logger";
 import { styles } from "@/components/Styles";
 import { signUpProps } from "@/types";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth, db } from "@/utils/firebase";
+import { doc, setDoc } from "firebase/firestore";
+import useUser from "@/store/useUser";
 
 export default function SignUp({
   navigation,
 }: signUpProps) {
-  const isLoaded = true;
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [emailAddress, setEmailAddress] = useState("");
-  const [password, setPassword] = useState("");
-
-  const auth = getAuth();
+  const [firstName, setFirstName] = useState("Walaalka");
+  const [surname, setSurName] = useState("Dalabay");
+  const [emailAddress, setEmailAddress] = useState("maxamed1st@outlook.com");
+  const [password, setPassword] = useState("123456");
+  const setData = useUser(state => state.setData);
 
   const onSignUpPress = async () => {
-    if (!isLoaded) {
-      return;
-    }
-
     try {
-      await createUserWithEmailAndPassword(auth, emailAddress, password);
+      const credential = await createUserWithEmailAndPassword(auth, emailAddress, password);
+      const uid = credential.user.uid;
+      const userDocRef = doc(db, "users", uid);
+
+      const data = {
+        uid,
+        firstName,
+        surname,
+        emailAddress
+      }
+
+      const res = await setDoc(userDocRef, data);
+      setData(data);
+      log("signUp", res);
     } catch (err: any) {
       log("SignUp", err?.status || "");
       log("SignUp", err?.errors ? JSON.stringify(err.errors) : err);
@@ -45,11 +55,11 @@ export default function SignUp({
 
       <View style={styles.inputView}>
         <TextInput
-          value={lastName}
+          value={surname}
           style={styles.textInput}
           placeholder="Last name..."
           placeholderTextColor="#000"
-          onChangeText={(lastName) => setLastName(lastName)}
+          onChangeText={(surname) => setSurName(surname)}
         />
       </View>
 
