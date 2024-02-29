@@ -4,6 +4,7 @@ import SignUp from "@/screens/SignUp";
 import Translate from '@/screens/Translate';
 import useUser from '@/store/useUser';
 import { RootStackParamList, RootTabParamList } from '@/types';
+import Spinner from '@/utils/Spinner';
 import log from "@/utils/logger";
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -32,6 +33,11 @@ function RestrictedTabs() {
 export default function Navigator() {
   log("navigation")
   const currentUser = useUser(state => state.currentUser);
-  return currentUser ? <RestrictedTabs /> : <AuthStack />
-}
+  const loading = useUser(state => state.loading);
 
+  return (
+    loading ? <Spinner /> :
+      currentUser ? <RestrictedTabs /> :
+        <AuthStack />
+  )
+}

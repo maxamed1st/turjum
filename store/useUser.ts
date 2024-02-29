@@ -1,7 +1,8 @@
-import { create } from "zustand";
 import { auth, db } from "@/utils/firebase";
+import log from "@/utils/logger";
+import { User, onAuthStateChanged } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
-import { onAuthStateChanged, User } from "firebase/auth"
+import { create } from "zustand";
 
 type state = {
   currentUser: User | null,
@@ -22,7 +23,7 @@ type action = {
 }
 
 const initialState: state = {
-  loading: true,
+  loading: false,
   currentUser: null,
   data: {
     uid: null,
@@ -50,22 +51,31 @@ onAuthStateChanged(auth, async (usr: any) => {
     setLoading
   } = useUser.getState();
 
-  if (usr) {
+  try {
     if (!loading) setLoading(true);
 
-    const userDocRef = doc(db, "users", usr.uid);
-    const docSnap = await getDoc(userDocRef);
-    const data: any = docSnap.exists() ? docSnap.data() : null;
+    if (usr) {
+      const userDocRef = doc(db, "users", usr.uid);
+      const docSnap = await getDoc(userDocRef);
+      const data: any = docSnap.exists() ? docSnap.data() : null;
 
-    setCurrentUser(usr);
-    setData(data);
+      setCurrentUser(usr);
+      setData(data);
 
-    setLoading(false);
-    return;
-  }
+      setLoading(false);
+      return;
+    }
 
-  if (currentUser) {
-    resetUser();
+    if (currentUser) {
+      resetUser();
+    }
+
+  } catch (err: any) {
+    //error handling
+    log("AuthState", err?.status || "");
+    log("AuthState", err?.errors ? JSON.stringify(err.errors) : err);
+
+  } finally {
     setLoading(false);
   }
 });
