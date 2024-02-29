@@ -1,8 +1,9 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { auth } from "@/utils/firebase";
+import { auth, db } from "@/utils/firebase";
 import { useTailwind } from 'tailwind-rn';
 import log from "../utils/logger";
 import { User, deleteUser, signOut } from "firebase/auth";
+import { doc, deleteDoc } from "firebase/firestore";
 import useUser from "@/store/useUser";
 
 export default function Profile() {
@@ -12,6 +13,8 @@ export default function Profile() {
 
   const onDelPress = async () => {
     try {
+      const userDocRef = doc(db, "users", user.uid);
+      deleteDoc(userDocRef);
       deleteUser(user);
     } catch (err: any) {
       log("Error", err?.status || "");
