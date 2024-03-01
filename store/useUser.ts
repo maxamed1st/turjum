@@ -23,7 +23,7 @@ type action = {
 }
 
 const initialState: state = {
-  loading: false,
+  loading: true,
   currentUser: null,
   data: {
     uid: null,

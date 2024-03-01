@@ -1,43 +1,39 @@
-import { DocumentPickerResult, getDocumentAsync } from 'expo-document-picker';
-import FormData from 'form-data';
-import axios from "axios";
+import { getDocumentAsync } from 'expo-document-picker';
 import { useState } from 'react';
 import { Text, Pressable } from 'react-native';
 import { useTailwind } from 'tailwind-rn';
-import Constants from 'expo-constants';
 import log from "@/utils/logger"
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { storage } from '@/utils/firebase';
+import { ref, uploadBytes } from 'firebase/storage';
+import useUser from '@/store/useUser';
 
 export default function Translate() {
   const tailwind = useTailwind();
   const [title, setTitle] = useState("");
-  const [doc, setDoc] = useState<DocumentPickerResult>();
+  const [uri, setUri] = useState("");
+  const currentUser = useUser(state => state.currentUser);
 
-  const handleUpload = async () => {
+  const handlePickDoc = async () => {
     const doc = await getDocumentAsync();
-    const docName = doc.assets ? doc.assets[0].name : "";
+    const docName = doc.assets?.at(0)?.name as string;
+    const uri = doc.assets?.at(0)?.uri as string;
+
     setTitle(docName);
-    setDoc(doc);
+    setUri(uri);
   }
 
-  const handleDocTranslation = async () => {
+  const handleUploadDoc = async () => {
     try {
-      const url = Constants?.expoConfig?.extra?.URL
-      const payload = new FormData();
+      const response = await fetch(uri);
+      const blob = await response.blob();
 
-      payload.append("file", {
-        name: doc?.assets?.at(0)?.name,
-        uri: doc?.assets?.at(0)?.uri,
-        type: doc?.assets?.at(0)?.mimeType,
-      });
-
-      //const result = await axios.postForm(url, payload);
-
-      //log("TRANSLATE", result.status + "\n" + result.data);
-      log("translate", "handleDocTranslation");
+      const storageRef = ref(storage, `users/${currentUser?.uid}/original/${title}`);
+      const res = await uploadBytes(storageRef, blob);
+      log("translate", res.ref.fullPath);
     } catch (err) {
-      log("TRANSLATE", err)
+      log("translate", err)
     }
   }
 
@@ -47,7 +43,7 @@ export default function Translate() {
         <SafeAreaView style={tailwind("flex-1 justify-start p-2")}>
           <Text style={tailwind("text-xs border py-3 px-3 rounded-md")}>{title}</Text>
           <Pressable
-            onPress={handleDocTranslation}
+            onPress={handleUploadDoc}
             style={tailwind("w-['100%'] bg-blue-500 items-center py-3 px-3 mt-auto rounded")}
           >
             <Text style={tailwind("text-white")}>Turjum</Text>
@@ -55,7 +51,7 @@ export default function Translate() {
         </SafeAreaView>
         :
         <SafeAreaView style={tailwind("flex-1 justify-center")}>
-          <Text style={tailwind("text-blue-600 text-center")} onPress={handleUpload}>upload a document...</Text>
+          <Text style={tailwind("text-blue-600 text-center")} onPress={handlePickDoc}>upload a document...</Text>
         </SafeAreaView>
       }
       <StatusBar style='dark' />
