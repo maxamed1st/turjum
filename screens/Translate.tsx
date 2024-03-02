@@ -1,13 +1,14 @@
-import { getDocumentAsync } from 'expo-document-picker';
-import { useState } from 'react';
-import { Text, Pressable } from 'react-native';
-import { useTailwind } from 'tailwind-rn';
-import log from "@/utils/logger"
-import { StatusBar } from 'expo-status-bar';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { storage } from '@/utils/firebase';
-import { ref, uploadBytes } from 'firebase/storage';
 import useUser from '@/store/useUser';
+import { storage } from '@/utils/firebase';
+import log from "@/utils/logger";
+import Ionicons from '@expo/vector-icons/Ionicons';
+import { getDocumentAsync } from 'expo-document-picker';
+import { StatusBar } from 'expo-status-bar';
+import { ref, uploadBytes } from 'firebase/storage';
+import { useState } from 'react';
+import { Pressable, Text, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { useTailwind } from 'tailwind-rn';
 
 export default function Translate() {
   const tailwind = useTailwind();
@@ -50,8 +51,15 @@ export default function Translate() {
           </Pressable>
         </SafeAreaView>
         :
-        <SafeAreaView style={tailwind("flex-1 justify-center")}>
-          <Text style={tailwind("text-blue-600 text-center")} onPress={handlePickDoc}>upload a document...</Text>
+
+        <SafeAreaView style={tailwind("flex-1 justify-center items-center")}>
+          <View>
+            <Text style={tailwind("text-blue-600 text-center")} onPress={handlePickDoc}>upload a document...</Text>
+          </View>
+          <View> <Text>OR</Text> </View>
+          <View>
+            <Text> <Ionicons name='camera' /> </Text>
+          </View>
         </SafeAreaView>
       }
       <StatusBar style='dark' />

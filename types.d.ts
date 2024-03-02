@@ -7,12 +7,17 @@ export type RootStackParamList = {
 }
 
 export type RootTabParamList = {
-  Translate: undefined;
+  TranslationStack: undefined;
   Profile: undefined;
+}
+
+export type TranslationParamList = {
+  Translate: undefined;
+  Camera: undefined;
 }
 
 export type signInProps = NativeStackScreenProps<RootStackParamList, "SignIn">
 export type signUpProps = NativeStackScreenProps<RootStackParamList, "SignUp">
 export type profileProps = BottomTabScreenProps<RootTabParamList, "Profile">
-export type transcribeProps = BottomTabScreenProps<RootTabParamList, "Translate">
+export type translateProps = BottomTabScreenProps<RootTabParamList, "Translate">
 
