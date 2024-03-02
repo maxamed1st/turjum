@@ -38,3 +38,5 @@ package-lock.json
 
 android/
 ios/
+credentials.json
+my-upload-key.keystore

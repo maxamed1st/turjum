@@ -19,5 +19,5 @@ export type TranslationParamList = {
 export type signInProps = NativeStackScreenProps<RootStackParamList, "SignIn">
 export type signUpProps = NativeStackScreenProps<RootStackParamList, "SignUp">
 export type profileProps = BottomTabScreenProps<RootTabParamList, "Profile">
-export type translateProps = BottomTabScreenProps<RootTabParamList, "Translate">
+export type translateProps = NativeStackScreenProps<TranslationParamList, "Translate">
 

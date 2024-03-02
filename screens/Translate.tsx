@@ -9,8 +9,9 @@ import { useState } from 'react';
 import { Pressable, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTailwind } from 'tailwind-rn';
+import { translateProps } from '@/types';
 
-export default function Translate() {
+export default function Translate(navigator: translateProps) {
   const tailwind = useTailwind();
   const [title, setTitle] = useState("");
   const [uri, setUri] = useState("");
@@ -52,15 +53,17 @@ export default function Translate() {
         </SafeAreaView>
         :
 
-        <SafeAreaView style={tailwind("flex-1 justify-center items-center")}>
-          <View>
+        <SafeAreaView style={tailwind("flex-1 items-center")}>
+          <View style={tailwind("flex-1")}>
             <Text style={tailwind("text-blue-600 text-center")} onPress={handlePickDoc}>upload a document...</Text>
           </View>
-          <View> <Text>OR</Text> </View>
-          <View>
-            <Text> <Ionicons name='camera' /> </Text>
+          <View style={tailwind("flex-1")}>
+            <Text>OR</Text>
           </View>
-        </SafeAreaView>
+          <View style={tailwind("flex-1")}>
+            <Ionicons name='camera' size={32} onPress={() => navigator.navigation.navigate("Camera")} />
+          </View>
+        </SafeAreaView >
       }
       <StatusBar style='dark' />
     </>
