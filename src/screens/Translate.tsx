@@ -3,16 +3,17 @@ import { storage } from '../utils/firebase';
 import log from "../utils/logger";
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { getDocumentAsync } from 'expo-document-picker';
-import { StatusBar } from 'expo-status-bar';
 import { ref, uploadBytes } from 'firebase/storage';
 import React, { useState } from 'react';
 import { Pressable, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { translateProps } from '../../types';
+import Spinner from '@/utils/Spinner';
 
 export default function Translate(navigator: translateProps) {
   const [title, setTitle] = useState("");
   const [uri, setUri] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const currentUser = useUser(state => state.currentUser);
 
   const handlePickDoc = async () => {
@@ -26,6 +27,7 @@ export default function Translate(navigator: translateProps) {
 
   const handleUploadDoc = async () => {
     try {
+      setIsLoading(true);
       const response = await fetch(uri);
       const blob = await response.blob();
 
@@ -34,6 +36,8 @@ export default function Translate(navigator: translateProps) {
       log("translate", res.ref.fullPath);
     } catch (err) {
       log("translate", err)
+    } finally {
+      setIsLoading(false);
     }
   }
 
@@ -48,9 +52,13 @@ export default function Translate(navigator: translateProps) {
 
           <Pressable
             onPress={handleUploadDoc}
-            tw="w-['100%'] bg-blue-500 items-center py-3 px-3 mt-auto rounded"
+            tw="w-full h-14 bg-black items-center justify-center p-3 rounded mt-auto"
           >
-            <Text tw="text-white">Turjum</Text>
+            {isLoading ?
+              <Spinner />
+              :
+              <Text tw="text-white">Turjum</Text>
+            }
           </Pressable>
         </SafeAreaView >
         :
@@ -67,7 +75,6 @@ export default function Translate(navigator: translateProps) {
           </View>
         </SafeAreaView >
       }
-      <StatusBar style='dark' />
     </>
   )
 }

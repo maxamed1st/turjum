@@ -1,24 +1,33 @@
+import Spinner from "@/utils/Spinner";
+import { FirebaseError } from "firebase/app";
+import { signInWithEmailAndPassword } from "firebase/auth";
 import { useState } from "react";
 import { Text, TextInput, TouchableOpacity, View } from "react-native";
-import log from "../utils/logger";
-import { styles } from "../components/Styles";
 import { signInProps } from "../../types";
+import { styles } from "../components/Styles";
 import { auth } from "../utils/firebase";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import log from "../utils/logger";
 
 export default function SignIn({
   navigation,
 }: signInProps) {
   const [emailAddress, setEmailAddress] = useState("maxamed1st@gmail.com");
   const [password, setPassword] = useState("123456");
+  const [isLoading, setIsLoading] = useState(false);
+  const [errors, setErrors] = useState("");
 
   const onSignInPress = async () => {
     try {
+      setIsLoading(true);
+      setErrors("");
       await signInWithEmailAndPassword(auth, emailAddress, password);
 
     } catch (err: any) {
       log("SignIn", err?.status || "");
       log("SignIn", err?.errors ? JSON.stringify(err.errors) : err);
+      err instanceof FirebaseError ? setErrors(err.message) : setErrors("something went wrong");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -33,7 +42,7 @@ export default function SignIn({
           style={styles.textInput}
           placeholder="Email..."
           placeholderTextColor="#000"
-          onChangeText={(emailAddress) => setEmailAddress(emailAddress)}
+          onChangeText={(emailAddress) => setEmailAddress(emailAddress.trim())}
         />
       </View>
 
@@ -44,12 +53,22 @@ export default function SignIn({
           placeholder="Password..."
           placeholderTextColor="#000"
           secureTextEntry={true}
-          onChangeText={(password) => setPassword(password)}
+          onChangeText={(password) => setPassword(password.trim())}
         />
       </View>
 
+      {errors &&
+        < View >
+          <Text tw="text-red-500">{errors}</Text>
+        </View>
+      }
+
       <TouchableOpacity style={styles.primaryButton} onPress={onSignInPress}>
-        <Text style={styles.primaryButtonText}>Sign in</Text>
+        {isLoading ?
+          <Spinner />
+          :
+          <Text style={styles.primaryButtonText}>Sign in</Text>
+        }
       </TouchableOpacity>
 
       <View style={styles.footer}>
@@ -62,6 +81,6 @@ export default function SignIn({
           <Text style={styles.secondaryButtonText}>Sign up</Text>
         </TouchableOpacity>
       </View>
-    </View>
+    </View >
   );
 }

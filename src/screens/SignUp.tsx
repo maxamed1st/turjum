@@ -1,12 +1,14 @@
+import Spinner from "@/utils/Spinner";
+import { FirebaseError } from "firebase/app";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { doc, setDoc } from "firebase/firestore";
 import { useState } from "react";
 import { Text, TextInput, TouchableOpacity, View } from "react-native";
-import log from "../utils/logger";
-import { styles } from "../components/Styles";
 import { signUpProps } from "../../types";
-import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth, db } from "../utils/firebase";
-import { doc, setDoc } from "firebase/firestore";
+import { styles } from "../components/Styles";
 import useUser from "../store/useUser";
+import { auth, db } from "../utils/firebase";
+import log from "../utils/logger";
 
 export default function SignUp({
   navigation,
@@ -15,10 +17,14 @@ export default function SignUp({
   const [surname, setSurName] = useState("Dalabay");
   const [emailAddress, setEmailAddress] = useState("maxamed1st@outlook.com");
   const [password, setPassword] = useState("123456");
+  const [isLoading, setIsLoading] = useState(false);
+  const [errors, setErrors] = useState("");
   const setData = useUser(state => state.setData);
 
   const onSignUpPress = async () => {
     try {
+      setIsLoading(true);
+      setErrors("");
       const credential = await createUserWithEmailAndPassword(auth, emailAddress, password);
       const uid = credential.user.uid;
       const userDocRef = doc(db, "users", uid);
@@ -36,8 +42,11 @@ export default function SignUp({
     } catch (err: any) {
       log("SignUp", err?.status || "");
       log("SignUp", err?.errors ? JSON.stringify(err.errors) : err);
+      err instanceof FirebaseError ? setErrors(err.message) : setErrors("something went wrong");
+    } finally {
+      setIsLoading(false);
     }
-  };
+  }
 
   const onSignInPress = () => navigation.replace("SignIn");
 
@@ -49,7 +58,7 @@ export default function SignUp({
           style={styles.textInput}
           placeholder="First name..."
           placeholderTextColor="#000"
-          onChangeText={(firstName) => setFirstName(firstName)}
+          onChangeText={(firstName) => setFirstName(firstName.trim())}
         />
       </View>
 
@@ -57,9 +66,9 @@ export default function SignUp({
         <TextInput
           value={surname}
           style={styles.textInput}
-          placeholder="Last name..."
+          placeholder="surname..."
           placeholderTextColor="#000"
-          onChangeText={(surname) => setSurName(surname)}
+          onChangeText={(surname) => setSurName(surname.trim())}
         />
       </View>
 
@@ -70,7 +79,7 @@ export default function SignUp({
           style={styles.textInput}
           placeholder="Email..."
           placeholderTextColor="#000"
-          onChangeText={(email) => setEmailAddress(email)}
+          onChangeText={(email) => setEmailAddress(email.trim())}
         />
       </View>
 
@@ -81,12 +90,24 @@ export default function SignUp({
           placeholder="Password..."
           placeholderTextColor="#000"
           secureTextEntry={true}
-          onChangeText={(password) => setPassword(password)}
+          onChangeText={(password) => setPassword(password.trim())}
         />
       </View>
 
-      <TouchableOpacity style={styles.primaryButton} onPress={onSignUpPress}>
-        <Text style={styles.primaryButtonText}>Sign up</Text>
+      {errors &&
+        < View >
+          <Text tw="text-red-500">{errors}</Text>
+        </View>
+      }
+
+      <TouchableOpacity
+        style={styles.primaryButton}
+        onPress={onSignUpPress}>
+        {isLoading ?
+          <Spinner />
+          :
+          <Text style={styles.primaryButtonText}>Sign up</Text>
+        }
       </TouchableOpacity>
 
       <View style={styles.footer}>
