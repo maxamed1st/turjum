@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { Text, TextInput, TouchableOpacity, View } from "react-native";
-import log from "@/utils/logger";
-import { styles } from "@/components/Styles";
-import { signUpProps } from "@/types";
+import log from "../utils/logger";
+import { styles } from "../components/Styles";
+import { signUpProps } from "../../types";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth, db } from "@/utils/firebase";
+import { auth, db } from "../utils/firebase";
 import { doc, setDoc } from "firebase/firestore";
-import useUser from "@/store/useUser";
+import useUser from "../store/useUser";
 
 export default function SignUp({
   navigation,

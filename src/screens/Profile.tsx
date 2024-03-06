@@ -1,13 +1,12 @@
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { auth, db } from "@/utils/firebase";
-import { useTailwind } from 'tailwind-rn';
+import { Text, TouchableOpacity, View } from "react-native";
+import { auth, db } from "../utils/firebase";
 import log from "../utils/logger";
 import { User, deleteUser, signOut } from "firebase/auth";
 import { doc, deleteDoc } from "firebase/firestore";
-import useUser from "@/store/useUser";
+import useUser from "../store/useUser";
+import React from "react";
 
 export default function Profile() {
-  const tailwind = useTailwind();
   const user = auth.currentUser as User;
   const userData = useUser(state => state.data);
 
@@ -32,30 +31,16 @@ export default function Profile() {
   };
 
   return (
-    <View style={tailwind("p-4")}>
-      <Text style={styles.title}>Hello {userData.firstName}</Text>
-      <TouchableOpacity onPress={onDelPress} style={styles.link}>
-        <Text style={styles.linkText}>Delete Account</Text>
+    <View tw="m-4 p-4">
+      < Text tw="text-2xl text-bold mb-2"> Hello {userData.firstName}</Text >
+      <TouchableOpacity onPress={onDelPress} tw="mt-2 px-4">
+        <Text tw="text-lg text-blue-600">Delete Account</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity onPress={onSignOutPress} style={styles.link}>
-        <Text style={styles.linkText}>Sign Out</Text>
+      <TouchableOpacity onPress={onSignOutPress} tw="mt-2 px-4">
+        <Text tw="text-lg text-blue-600">Sign Out</Text>
       </TouchableOpacity>
-    </View>
+    </View >
   );
 }
 
-const styles = StyleSheet.create({
-  title: {
-    fontSize: 20,
-    fontWeight: "bold",
-  },
-  link: {
-    marginTop: 15,
-    paddingVertical: 15,
-  },
-  linkText: {
-    fontSize: 14,
-    color: "#2e78b7",
-  },
-});

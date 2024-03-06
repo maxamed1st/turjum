@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { Text, TextInput, TouchableOpacity, View } from "react-native";
-import log from "@/utils/logger";
-import { styles } from "@/components/Styles";
-import { signInProps } from "@/types";
-import { auth } from "@/utils/firebase";
+import log from "../utils/logger";
+import { styles } from "../components/Styles";
+import { signInProps } from "../../types";
+import { auth } from "../utils/firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
 
 export default function SignIn({

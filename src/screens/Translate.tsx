@@ -1,18 +1,16 @@
-import useUser from '@/store/useUser';
-import { storage } from '@/utils/firebase';
-import log from "@/utils/logger";
+import useUser from '../store/useUser';
+import { storage } from '../utils/firebase';
+import log from "../utils/logger";
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { getDocumentAsync } from 'expo-document-picker';
 import { StatusBar } from 'expo-status-bar';
 import { ref, uploadBytes } from 'firebase/storage';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Pressable, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useTailwind } from 'tailwind-rn';
-import { translateProps } from '@/types';
+import { translateProps } from '../../types';
 
 export default function Translate(navigator: translateProps) {
-  const tailwind = useTailwind();
   const [title, setTitle] = useState("");
   const [uri, setUri] = useState("");
   const currentUser = useUser(state => state.currentUser);
@@ -42,26 +40,30 @@ export default function Translate(navigator: translateProps) {
   return (
     <>
       {title ?
-        <SafeAreaView style={tailwind("flex-1 justify-start p-2")}>
-          <Text style={tailwind("text-xs border py-3 px-3 rounded-md")}>{title}</Text>
+        <SafeAreaView tw="flex-1 justify-start m-2">
+          <View tw="flex-row justify-between border p-3 rounded-md">
+            <Text tw="text-xs">{title}</Text>
+            <Ionicons name="close-sharp" size={18} onPress={() => setTitle("")} />
+          </View>
+
           <Pressable
             onPress={handleUploadDoc}
-            style={tailwind("w-['100%'] bg-blue-500 items-center py-3 px-3 mt-auto rounded")}
+            tw="w-['100%'] bg-blue-500 items-center py-3 px-3 mt-auto rounded"
           >
-            <Text style={tailwind("text-white")}>Turjum</Text>
+            <Text tw="text-white">Turjum</Text>
           </Pressable>
-        </SafeAreaView>
+        </SafeAreaView >
         :
 
-        <SafeAreaView style={tailwind("flex-1 items-center")}>
-          <View style={tailwind("flex-1")}>
-            <Text style={tailwind("text-blue-600 text-center")} onPress={handlePickDoc}>upload a document...</Text>
+        <SafeAreaView tw="flex-1 items-center justify-evenly">
+          <View>
+            <Text tw="text-blue-600 text-center" onPress={handlePickDoc}>upload a document...</Text>
           </View>
-          <View style={tailwind("flex-1")}>
+          <View>
             <Text>OR</Text>
           </View>
-          <View style={tailwind("flex-1")}>
-            <Ionicons name='camera' size={32} onPress={() => navigator.navigation.navigate("Camera")} />
+          <View>
+            <Ionicons name='camera' size={32} color="#f00" onPress={() => navigator.navigation.navigate("Camera")} />
           </View>
         </SafeAreaView >
       }

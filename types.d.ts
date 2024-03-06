@@ -1,3 +1,4 @@
+/// <reference types="nativewind/types" />
 import type { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 
@@ -7,7 +8,7 @@ export type RootStackParamList = {
 }
 
 export type RootTabParamList = {
-  TranslationStack: undefined;
+  Translation: undefined;
   Profile: undefined;
 }
 

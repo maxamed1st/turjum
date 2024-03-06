@@ -1,5 +1,5 @@
-import { auth, db } from "@/utils/firebase";
-import log from "@/utils/logger";
+import { auth, db } from "../utils/firebase";
+import log from "../utils/logger";
 import { User, onAuthStateChanged } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
 import { create } from "zustand";
