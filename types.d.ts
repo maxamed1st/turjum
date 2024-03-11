@@ -12,15 +12,10 @@ export type RootTabParamList = {
   Profile: undefined;
 }
 
-export type TranslationParamList = {
-  Translate: undefined;
-  Camera: undefined;
-}
-
 export type signInProps = NativeStackScreenProps<RootStackParamList, "SignIn">
 export type signUpProps = NativeStackScreenProps<RootStackParamList, "SignUp">
+export type translateProps = BottomTabScreenProps<RootTabParamList, "Translate">
 export type profileProps = BottomTabScreenProps<RootTabParamList, "Profile">
-export type translateProps = NativeStackScreenProps<TranslationParamList, "Translate">
 
 export type jobDocument = {
   title: string,

@@ -1,20 +1,17 @@
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import React from 'react';
-import { RootStackParamList, RootTabParamList, TranslationParamList } from 'types';
-import CameraComponent from '@/screens/translate/features/Camera';
+import Spinner from '@/components/Spinner';
 import Profile from '@/screens/Profile';
 import SignIn from '@/screens/SignIn';
 import SignUp from "@/screens/SignUp";
 import Translate from '@/screens/translate';
 import useUser from '@/store/useUser';
-import Spinner from '@/components/Spinner';
 import log from "@/utils/logger";
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import React from 'react';
+import { RootStackParamList, RootTabParamList } from 'types';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const Tab = createBottomTabNavigator<RootTabParamList>();
-
-const TranslateStack = createNativeStackNavigator<TranslationParamList>();
 
 function AuthStack() {
   return (
@@ -25,18 +22,10 @@ function AuthStack() {
   );
 }
 
-function TranslationStack() {
-  return (
-    <TranslateStack.Navigator initialRouteName="Translate" screenOptions={{ headerShown: false }}>
-      <TranslateStack.Screen name="Translate" component={Translate} />
-      <TranslateStack.Screen name="Camera" component={CameraComponent} />
-    </TranslateStack.Navigator>)
-}
-
 function RestrictedTabs() {
   return (
     <Tab.Navigator initialRouteName='Translation' screenOptions={{ headerShown: false }}>
-      <Tab.Screen name="Translation" component={TranslationStack} />
+      <Tab.Screen name="Translation" component={Translate} />
       <Tab.Screen name="Profile" component={Profile} />
     </Tab.Navigator>
   );
