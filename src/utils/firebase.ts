@@ -24,7 +24,7 @@ export const db = getFirestore(firebase);
 export const storage = getStorage(firebase);
 
 
-type props = {
+type uploadDocdocumentProps = {
   currentUser: any,
   uri: string,
   title?: string,
@@ -32,7 +32,7 @@ type props = {
 }
 
 //Upload a document to storage
-export async function uploadDocdocument({ currentUser, uri, title }: props) {
+export async function uploadDocdocument({ currentUser, uri, title }: uploadDocdocumentProps) {
   try {
     const response = await fetch(uri);
     const blob = await response.blob();
