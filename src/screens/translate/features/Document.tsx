@@ -10,14 +10,14 @@ import React, { useState } from 'react';
 import { Pressable, Text, TextInput, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { jobDocument } from 'types';
-import { titleAtom, uriAtom } from '..';
+import { titleAtom, uriAtom, renderingAtom } from '../index';
 
 export default function TranslateDocument() {
   const currentUser = useUser(state => state.currentUser);
 
-  const title = useAtomValue(titleAtom);
-  const setTitle = useSetAtom(titleAtom);
   const uri = useAtomValue(uriAtom);
+  const title = useAtomValue(titleAtom);
+  const setRendering = useSetAtom(renderingAtom);
 
   const [srcLang, setSrcLang] = useState("");
   const [targetLang, setTargetLang] = useState("");
@@ -30,7 +30,6 @@ export default function TranslateDocument() {
       const path = await uploadDocdocument({ currentUser, title, uri }) as string;
 
       const colRef = collection(db, "users", uid, "jobs");
-
       const data: jobDocument = {
         title,
         path: path,
@@ -41,9 +40,7 @@ export default function TranslateDocument() {
 
       const result = await addDoc(colRef, data);
       log("Translate", result);
-    }
-
-    catch (err) {
+    } catch (err) {
       log("translate", err)
     } finally {
       setIsLoading(false);
@@ -54,7 +51,7 @@ export default function TranslateDocument() {
     <SafeAreaView tw="flex-1 justify-between m-2">
       <View tw="flex-row justify-between border p-3 rounded-md">
         <Text tw="text-xs">{title}</Text>
-        <Ionicons name="close-sharp" size={18} onPress={() => setTitle("")} />
+        <Ionicons name="close-sharp" size={18} onPress={() => setRendering("none")} />
       </View>
 
       <View style={styles.inputView}>
