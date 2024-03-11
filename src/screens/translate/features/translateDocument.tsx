@@ -1,25 +1,53 @@
 import Spinner from '@/components/Spinner';
 import { styles } from '@/components/Styles';
+import useUser from '@/store/useUser';
+import { db, uploadDocdocument } from '@/utils/firebase';
+import log from '@/utils/logger';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { getDocumentAsync } from 'expo-document-picker';
-import React from 'react';
+import { addDoc, collection } from 'firebase/firestore';
+import React, { useState } from 'react';
 import { Pressable, Text, TextInput, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { TranslateDocumentProps } from 'types';
+import { jobDocument } from 'types';
 
-export default function TranslateDocument(props: TranslateDocumentProps) {
+export default function TranslateDocument() {
+  const [title, setTitle] = useState("");
+  const [uri, setUri] = useState("");
+  const [srcLang, setSrcLang] = useState("");
+  const [targetLang, setTargetLang] = useState("");
 
-  const {
-    title,
-    setTitle,
-    srcLang,
-    setSrcLang,
-    targetLang,
-    setTargetLang,
-    handleUploadDoc,
-    isLoading,
-    setUri
-  } = props;
+  const [isLoading, setIsLoading] = useState(false);
+  const currentUser = useUser(state => state.currentUser);
+
+  const handleUploadDoc = async () => {
+    try {
+      setIsLoading(true);
+      const uid = currentUser?.uid as string;
+      //const path = await uploadDocdocument({ currentUser, title, uri }) as string;
+
+      const colRef = collection(db, "users", uid, "jobs");
+
+      const path = "gs:/ / turjum - cf6e9.appspot.com / users / AZ325DwXUDfwB4BpVmkwDxmolWa2 / original / documents / CVMohamedHassanAhmed.pdf";
+
+      const data: jobDocument = {
+        title,
+        path: path,
+        srcLang,
+        targetLang,
+        credit: 0
+      }
+
+      const result = await addDoc(colRef, data);
+      log("Translate", result);
+    }
+
+    catch (err) {
+      log("translate", err)
+    } finally {
+      setIsLoading(false);
+    }
+  }
 
   const handlePickDoc = async () => {
     const doc = await getDocumentAsync();
