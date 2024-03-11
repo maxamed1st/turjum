@@ -43,3 +43,4 @@ android/
 ios/
 credentials.json
 my-upload-key.keystore
+credentials/
