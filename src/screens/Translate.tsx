@@ -26,9 +26,12 @@ export default function Translate(navigator: translateProps) {
 
       const colRef = collection(db, "users", uid, "jobs");
 
+      const path = "gs://turjum-cf6e9.appspot.com/users/AZ325DwXUDfwB4BpVmkwDxmolWa2/original/documents/CVMohamedHassanAhmed.pdf";
+
+
       const data: jobDocument = {
         title,
-        path: "gs://turjum-cf6e9.appspot.com/users/AZ325DwXUDfwB4BpVmkwDxmolWa2/original/documents/CVMohamedHassanAhmed.pdf",
+        path: path,
         srcLang,
         targetLang,
         credit: 0
