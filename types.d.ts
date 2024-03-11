@@ -22,3 +22,22 @@ export type signUpProps = NativeStackScreenProps<RootStackParamList, "SignUp">
 export type profileProps = BottomTabScreenProps<RootTabParamList, "Profile">
 export type translateProps = NativeStackScreenProps<TranslationParamList, "Translate">
 
+export type jobDocument = {
+  title: string,
+  path: string,
+  srcLang: string,
+  targetLang: string,
+  credit: number
+}
+
+export type TranslateDocumentProps = {
+  title: string,
+  setTitle: (v: any) => any,
+  srcLang: string,
+  setSrcLang: (v: string) => any,
+  targetLang: string,
+  setTargetLang: (v: string) => any,
+  handleUploadDoc: () => void,
+  isLoading: boolean,
+  setUri: (v: string) => any
+}

@@ -1,7 +1,8 @@
+import { logErr } from "@/utils/logger";
 import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
 import { getFirestore } from "firebase/firestore";
-import { getStorage } from "firebase/storage";
+import { getStorage, ref, uploadBytes } from "firebase/storage";
 
 // Initialize Firebase
 const firebaseConfig = {
@@ -21,3 +22,31 @@ const firebase = initializeApp(firebaseConfig);
 export const auth = getAuth(firebase);
 export const db = getFirestore(firebase);
 export const storage = getStorage(firebase);
+
+
+type props = {
+  currentUser: any,
+  uri: string,
+  title?: string,
+  content?: any,
+}
+
+//Upload a document to storage
+export async function uploadDocdocument({ currentUser, uri, title }: props) {
+  try {
+    const response = await fetch(uri);
+    const blob = await response.blob();
+    const newUri = `original/${title}`;
+
+    const storageRef = ref(storage, `users/${currentUser?.uid}/${newUri}`);
+    const res = await uploadBytes(storageRef, blob);
+    const path = `gs://turjum-cf6e9.appspot.com/${res.ref.fullPath}`;
+
+    return path;
+  }
+
+  catch (err) {
+    logErr("translate", err);
+    return err;
+  }
+}
