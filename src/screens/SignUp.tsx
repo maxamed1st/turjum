@@ -1,14 +1,14 @@
-import Spinner from "@/utils/Spinner";
+import Spinner from "@/components/Spinner";
+import { styles } from "@/components/Styles";
+import useUser from "@/store/useUser";
+import { auth, db } from "@/utils/firebase";
+import log from "@/utils/logger";
 import { FirebaseError } from "firebase/app";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 import { useState } from "react";
 import { Text, TextInput, TouchableOpacity, View } from "react-native";
-import { signUpProps } from "../../types";
-import { styles } from "../components/Styles";
-import useUser from "../store/useUser";
-import { auth, db } from "../utils/firebase";
-import log from "../utils/logger";
+import { signUpProps } from "types";
 
 export default function SignUp({
   navigation,

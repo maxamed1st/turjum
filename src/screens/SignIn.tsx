@@ -1,12 +1,12 @@
-import Spinner from "@/utils/Spinner";
+import Spinner from "@/components/Spinner";
 import { FirebaseError } from "firebase/app";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { useState } from "react";
 import { Text, TextInput, TouchableOpacity, View } from "react-native";
-import { signInProps } from "../../types";
-import { styles } from "../components/Styles";
-import { auth } from "../utils/firebase";
-import log from "../utils/logger";
+import { signInProps } from "types";
+import { styles } from "@/components/Styles";
+import { auth } from "@/utils/firebase";
+import { logErr } from "@/utils/logger";
 
 export default function SignIn({
   navigation,
@@ -23,8 +23,7 @@ export default function SignIn({
       await signInWithEmailAndPassword(auth, emailAddress, password);
 
     } catch (err: any) {
-      log("SignIn", err?.status || "");
-      log("SignIn", err?.errors ? JSON.stringify(err.errors) : err);
+      logErr("SignIn", err)
       err instanceof FirebaseError ? setErrors(err.message) : setErrors("something went wrong");
     } finally {
       setIsLoading(false);

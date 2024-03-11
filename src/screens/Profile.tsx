@@ -1,9 +1,9 @@
 import { Text, TouchableOpacity, View } from "react-native";
-import { auth, db } from "../utils/firebase";
-import log from "../utils/logger";
+import { auth, db } from "@/utils/firebase";
+import log from "@/utils/logger";
 import { User, deleteUser, signOut } from "firebase/auth";
 import { doc, deleteDoc } from "firebase/firestore";
-import useUser from "../store/useUser";
+import useUser from "@/store/useUser";
 import React from "react";
 
 export default function Profile() {

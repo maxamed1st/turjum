@@ -1,15 +1,15 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
-import { RootStackParamList, RootTabParamList, TranslationParamList } from '../../types';
-import CameraComponent from '../components/Camera';
-import Profile from '../screens/Profile';
-import SignIn from '../screens/SignIn';
-import SignUp from "../screens/SignUp";
-import Translate from '../screens/Translate';
-import useUser from '../store/useUser';
-import Spinner from '../utils/Spinner';
-import log from "../utils/logger";
+import { RootStackParamList, RootTabParamList, TranslationParamList } from 'types';
+import CameraComponent from './src/features/Camera';
+import Profile from '@/screens/Profile';
+import SignIn from '@/screens/SignIn';
+import SignUp from "@/screens/SignUp";
+import Translate from '@/screens/Translate';
+import useUser from '@/store/useUser';
+import Spinner from '@/components/Spinner';
+import log from "@/utils/logger";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const Tab = createBottomTabNavigator<RootTabParamList>();
