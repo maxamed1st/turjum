@@ -1,4 +1,3 @@
-import TranslateDocument from '@/features/TranslateDocument';
 import useUser from '@/store/useUser';
 import { db, uploadDocdocument } from '@/utils/firebase';
 import log from "@/utils/logger";
@@ -8,6 +7,7 @@ import React, { useState } from 'react';
 import { Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { jobDocument, translateProps } from 'types';
+import TranslateDocument from './features/translateDocument';
 
 export default function Translate(navigator: translateProps) {
   const [title, setTitle] = useState("");
