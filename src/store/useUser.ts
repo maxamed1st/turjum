@@ -11,6 +11,7 @@ type state = {
     firstName: String | null,
     surname: String | null,
     emailAddress: String | null
+    credit: number
   },
   loading: boolean,
 }
@@ -29,7 +30,8 @@ const initialState: state = {
     uid: null,
     firstName: null,
     surname: null,
-    emailAddress: null
+    emailAddress: null,
+    credit: 0
   },
 }
 
@@ -47,12 +49,11 @@ onAuthStateChanged(auth, async (usr: any) => {
     setCurrentUser,
     setData,
     resetUser,
-    loading,
     setLoading
   } = useUser.getState();
 
   try {
-    if (!loading) setLoading(true);
+    setLoading(true);
 
     if (usr) {
       const userDocRef = doc(db, "users", usr.uid);

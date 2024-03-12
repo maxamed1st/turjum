@@ -33,7 +33,8 @@ export default function SignUp({
         uid,
         firstName,
         surname,
-        emailAddress
+        emailAddress,
+        credit: 0
       }
 
       const res = await setDoc(userDocRef, data);
