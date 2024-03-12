@@ -24,15 +24,3 @@ export type jobDocument = {
   targetLang: string,
   credit: number
 }
-
-export type TranslateDocumentProps = {
-  title: string,
-  setTitle: (v: any) => any,
-  srcLang: string,
-  setSrcLang: (v: string) => any,
-  targetLang: string,
-  setTargetLang: (v: string) => any,
-  handleUploadDoc: () => void,
-  isLoading: boolean,
-  setUri: (v: string) => any
-}
