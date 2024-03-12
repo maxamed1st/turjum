@@ -1,28 +1,31 @@
 import { Ionicons } from '@expo/vector-icons';
 import { getDocumentAsync } from 'expo-document-picker';
 import { atom, useAtom } from 'jotai';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { SafeAreaView, Text, View } from 'react-native';
 import CameraComponent from './features/Camera';
 import TranslateDocument from './features/Document';
 
 type renderingType = "none" | "document" | "camera";
 
-export const renderingAtom = atom<renderingType>("none")
 export const titleAtom = atom("");
 export const uriAtom = atom("");
+
+export const renderingAtom = atom<renderingType, any, any>(
+  "none",
+  (_, set, renderNext) => {
+    if (renderNext === "none") {
+      set(uriAtom, "");
+      set(titleAtom, "");
+    }
+    set(renderingAtom, renderNext);
+  },
+);
 
 export default function Translate() {
   const [rendering, setRendering] = useAtom(renderingAtom);
   const setTitle = useAtom(titleAtom)[1];
   const setUri = useAtom(uriAtom)[1];
-
-  useEffect(() => {
-    if (rendering == "none") {
-      setTitle("");
-      setUri("");
-    }
-  }, [rendering])
 
   const handlePickDocument = async () => {
     const doc = await getDocumentAsync();
