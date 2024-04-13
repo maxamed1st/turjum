@@ -1,8 +1,5 @@
-import * as admin from "firebase-admin"
 import { log } from "firebase-functions/logger";
 import { onDocumentCreated, onDocumentWritten } from "firebase-functions/v2/firestore";
-
-admin.initializeApp();
 
 export const handleDocument = onDocumentCreated("users/{userId}/jobs", async (event) => {
   const data = event.data?.data();
