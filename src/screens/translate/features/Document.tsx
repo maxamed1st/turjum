@@ -1,5 +1,4 @@
 import Spinner from '@/components/Spinner';
-import { styles } from '@/components/Styles';
 import useUser from '@/store/useUser';
 import { db, uploadDocdocument } from '@/utils/firebase';
 import log from '@/utils/logger';
@@ -7,20 +6,24 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import { addDoc, collection } from 'firebase/firestore';
 import { useAtomValue, useSetAtom } from 'jotai';
 import React, { useState } from 'react';
-import { Pressable, Text, TextInput, View } from 'react-native';
+import { Pressable, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { jobDocument } from 'types';
-import { titleAtom, uriAtom, renderingAtom } from '../index';
+import PickLang from '../utils/PickLang';
+import { renderingAtom, titleAtom, uriAtom } from '../utils/atoms';
+
+type Lang = "en" | "so" | "sv";
 
 export default function TranslateDocument() {
   const currentUser = useUser(state => state.currentUser);
+  const credit = useUser(state => state.data?.credit);
 
   const uri = useAtomValue(uriAtom);
   const title = useAtomValue(titleAtom);
   const setRendering = useSetAtom(renderingAtom);
 
-  const [srcLang, setSrcLang] = useState("");
-  const [targetLang, setTargetLang] = useState("");
+  const [srcLang, setSrcLang] = useState<Lang>("en");
+  const [targetLang, setTargetLang] = useState<Lang>("sv");
   const [isLoading, setIsLoading] = useState(false);
 
   const handleUploadDoc = async () => {
@@ -35,7 +38,7 @@ export default function TranslateDocument() {
         path: path,
         srcLang,
         targetLang,
-        credit: 0
+        credit: credit
       }
 
       const result = await addDoc(colRef, data);
@@ -54,26 +57,11 @@ export default function TranslateDocument() {
         <Ionicons name="close-sharp" size={18} onPress={() => setRendering("none")} />
       </View>
 
-      <View style={styles.inputView}>
-        <TextInput
-          autoCapitalize="none"
-          value={srcLang}
-          style={styles.textInput}
-          placeholder="source langauge..."
-          placeholderTextColor="#000"
-          onChangeText={(text) => setSrcLang(text.trim())}
-        />
-      </View>
-
-      <View style={styles.inputView}>
-        <TextInput
-          autoCapitalize="none"
-          value={targetLang}
-          style={styles.textInput}
-          placeholder="target langauge..."
-          placeholderTextColor="#000"
-          onChangeText={(text) => setTargetLang(text.trim())}
-        />
+      <View>
+        <Text> Source Language </Text>
+        <PickLang value={srcLang} setValue={setSrcLang} />
+        <Text> Target Language </Text>
+        <PickLang value={targetLang} setValue={setTargetLang} />
       </View>
 
       <Pressable
