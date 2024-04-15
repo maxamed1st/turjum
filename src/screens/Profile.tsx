@@ -1,23 +1,39 @@
-import { Text, TouchableOpacity, View } from "react-native";
-import { auth, db } from "@/utils/firebase";
-import log from "@/utils/logger";
-import { User, deleteUser, signOut } from "firebase/auth";
-import { doc, deleteDoc } from "firebase/firestore";
 import useUser from "@/store/useUser";
+import { auth, db, storage } from "@/utils/firebase";
+import log, { logErr } from "@/utils/logger";
+import { User, deleteUser, signOut } from "firebase/auth";
+import { deleteDoc, doc } from "firebase/firestore";
+import { deleteObject, ref } from "firebase/storage";
 import React from "react";
+import { Text, TouchableOpacity, View } from "react-native";
 
 export default function Profile() {
   const user = auth.currentUser as User;
   const userData = useUser(state => state.data);
 
   const onDelPress = async () => {
+    //delete user data
     try {
       const userDocRef = doc(db, "users", user.uid);
-      deleteDoc(userDocRef);
-      deleteUser(user);
-    } catch (err: any) {
-      log("Error", err?.status || "");
-      log("Error", err?.errors ? JSON.stringify(err.errors) : err);
+      await deleteDoc(userDocRef);
+    } catch (err) {
+      logErr("delete data", err);
+    }
+
+    //delete user storage
+    try {
+      const userStoreRef = ref(storage, "users/" + user.uid);
+      console.warn(userStoreRef.fullPath);
+      await deleteObject(userStoreRef);
+    } catch (err) {
+      logErr("delete storage", err);
+    }
+
+    //delete user
+    try {
+      await deleteUser(user);
+    } catch (err) {
+      logErr("delete user", err)
     }
   }
 
