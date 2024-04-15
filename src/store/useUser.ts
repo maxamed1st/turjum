@@ -44,7 +44,7 @@ const useUser = create<state & action>(set => ({
   setLoading: (loading: boolean) => set({ loading })
 }));
 
-onAuthStateChanged(auth, async (usr: any) => {
+onAuthStateChanged(auth, async (usr: User) => {
   const { currentUser,
     setCurrentUser,
     setData,
