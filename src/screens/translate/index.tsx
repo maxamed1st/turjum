@@ -1,5 +1,5 @@
 import Spinner from '@/components/Spinner';
-import { Ionicons } from '@expo/vector-icons';
+// import { Ionicons } from '@expo/vector-icons';
 import { getDocumentAsync } from 'expo-document-picker';
 import { useAtom } from 'jotai';
 import React from 'react';
@@ -39,13 +39,13 @@ export default function Translate() {
                 <Text tw="text-blue-600 text-center" onPress={handlePickDocument}>upload a document...</Text>
               </View >
 
-              <View>
-                <Text>OR</Text>
-              </View>
-
-              <View>
-                <Ionicons name='camera' size={32} color="#f00" onPress={() => setRendering("camera")} />
-              </View>
+              {/* <View> */}
+              {/*   <Text>OR</Text> */}
+              {/* </View> */}
+              {/**/}
+              {/* <View> */}
+              {/*   <Ionicons name='camera' size={32} color="#f00" onPress={() => setRendering("camera")} /> */}
+              {/* </View> */}
             </SafeAreaView >
             :
             rendering == "document" ?
