@@ -22,5 +22,4 @@ export type jobDocument = {
   path: string,
   srcLang: string,
   targetLang: string,
-  credit: number
 }

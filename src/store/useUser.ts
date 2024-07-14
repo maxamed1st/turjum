@@ -11,7 +11,6 @@ type state = {
     firstName: String | null,
     surname: String | null,
     emailAddress: String | null
-    credit: number
   },
   loading: boolean,
 }
@@ -31,7 +30,6 @@ const initialState: state = {
     firstName: null,
     surname: null,
     emailAddress: null,
-    credit: 0
   },
 }
 

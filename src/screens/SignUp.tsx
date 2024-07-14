@@ -34,7 +34,6 @@ export default function SignUp({
         firstName,
         surname,
         emailAddress,
-        credit: 0
       }
 
       const res = await setDoc(userDocRef, data);

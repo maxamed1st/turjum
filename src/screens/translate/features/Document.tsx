@@ -16,7 +16,6 @@ type Lang = "en" | "so" | "sv";
 
 export default function TranslateDocument() {
   const currentUser = useUser(state => state.currentUser);
-  const credit = useUser(state => state.data?.credit);
 
   const uri = useAtomValue(uriAtom);
   const title = useAtomValue(titleAtom);
@@ -38,7 +37,6 @@ export default function TranslateDocument() {
         path: path,
         srcLang,
         targetLang,
-        credit: credit
       }
 
       const result = await addDoc(colRef, data);
